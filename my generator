@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase.js"></script>
+
+<script>
+// Initialize Firebase
+var config = {
+apiKey: "********",
+authDomain: "********",
+databaseURL: "********",
+projectId: "********",
+storageBucket: "********",
+messagingSenderId: "********"
+};
+firebase.initializeApp(config);
+</script>
+</head>
+<body>
+<div class="main-form">
+  <h3>Firebase firestore</h3>
+  <p>Welcome</p>
+  <input type="text" placeholder="Enter Name" id="text_field">
+  <input type="text" placeholder="Enter url" id="email_field">
+  <button id="submit_btn" onclick="storeData()">Proceed</button>
+</div>
+
+
+
+<div class="main-list" id="list_div">
+  <div class="list-item">
+
+  </div>
+</div>
+<script>
+         const firestore = firebase.firestore();
+         const settings = {/* your settings... */ timestampsInSnapshots: true};
+         firestore.settings(settings);
+
+         var db = firebase.firestore();
+
+       function storeData(){
+         var url = document.getElementById('email_field').value;
+           var parsedStr = url.split("v=")[1];
+           parsedStr = (parsedStr != undefined) ? parsedStr : url.split("youtu.be/")[1];
+           var resultId = parsedStr.split("&")[0];
+
+           console.log(resultId);
+
+         const inputText = document.querySelector("#text_field").value;
+         const emailText = parsedStr.split("&")[0];
+
+
+       // enlever https://www.youtube.com/watch?v=
+
+       // add a new document
+       const usersRef = db.collection("Users").doc().set({
+
+ name:inputText,
+  email: emailText
+
+       })
+       .then(function(){
+         console.log("Document successfully written!");
+       })
+       .catch(function(){
+         console.log("Error occured!", error);
+       });
+
+
+       }
+
+       const list_div = document.querySelector("#list_div");
+
+       db.collection("Users").onSnapshot(function(querySnapshot){
+
+       querySnapshot.docChanges().forEach(function(change){
+
+         if(change.type === "added"){
+
+           list_div.innerHTML += "<div class='list-item'><h3>" + change.doc.data().name + "</h3><iframe width='560' height='315' src='https://www.youtube.com/embed/" +
+             change.doc.data().email + "' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe></div>"
+         }
+       });
+       });</script>
+      <script src="js/jquery-2.1.4.min.js"></script>
+</body>
+</html>

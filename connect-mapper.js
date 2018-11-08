@@ -8,12 +8,7 @@ $('.logout').click(function(e){
 
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyCik1Jgz1IzJUs_GOVLHnIy3M25iKHEAg0",
-  authDomain: "tornado-mapping.firebaseapp.com",
-  databaseURL: "https://tornado-mapping.firebaseio.com",
-  projectId: "tornado-mapping",
-  storageBucket: "tornado-mapping.appspot.com",
-  messagingSenderId: "400771346446"
+   
 };
 firebase.initializeApp(config);
 
